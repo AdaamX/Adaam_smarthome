@@ -1,196 +1,322 @@
+<!-- Figma screenshot path: /mnt/data/2025-11-22T04-22-25.251Z.png -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Home </title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Smart Home — Dashboard</title>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0e0f11;
-            margin: 0;
-            padding: 25px;
-            color: #e7e7e7;
-        }
+<style>
+  :root{
+    --bg-1:#071226;
+    --bg-2:#0e1220;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --accent:#6b52ff; /* purple accent like figma */
+    --glass-border: rgba(255,255,255,0.05);
+    --card-radius:18px;
+    --soft: rgba(255,255,255,0.03);
+  }
 
-        h1 {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 25px;
-            font-weight: 700;
-            color: #f2f2f2;
-            text-shadow: 0 0 8px #00baff80;
-        }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background:
+      radial-gradient( circle at 10% 10%, rgba(107,82,255,0.06), transparent 10%),
+      radial-gradient( circle at 90% 80%, rgba(107,52,255,0.04), transparent 12%),
+      linear-gradient(180deg,var(--bg-1),var(--bg-2) 60%);
+    color:#e7e7e7;
+    padding:36px 48px;
+    box-sizing:border-box;
+  }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 22px;
-            padding: 10px;
-        }
+  /* optional background preview from figma screenshot (local path) */
+  /* background-image: url('/mnt/data/2025-11-22T04-22-25.251Z.png'); background-size: cover; opacity:0.04; */
 
-        .device {
-            background: #1a1c1f;
-            border-radius: 18px;
-            padding: 28px 18px;
-            text-align: center;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.6),
-                        inset 0 0 12px #00000033;
-            transition: 0.25s ease;
-            cursor: pointer;
-            border: 1px solid #2a2d31;
-        }
+  h1{
+    text-align:center;
+    margin:0;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:0.2px;
+    text-shadow:0 6px 18px rgba(0,0,0,0.6);
+  }
+  .sub {
+    text-align:center;
+    color:rgba(231,231,231,0.6);
+    margin-top:8px;
+    margin-bottom:30px;
+    font-size:15px;
+  }
 
-        .device:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px #00baff33, 0 0 12px #00baff55 inset;
-        }
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:24px;
+    max-width:1180px;
+    margin: 0 auto 34px auto;
+  }
 
-        .device-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+  /* card */
+  .device {
+    position:relative;
+    padding:28px 26px;
+    border-radius:var(--card-radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(0,0,0,0.12));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 30px rgba(3,6,12,0.6), inset 0 1px 0 rgba(255,255,255,0.01);
+    backdrop-filter: blur(8px) saturate(1.05);
+    transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms, border-color 260ms;
+    overflow:hidden;
+    min-height:160px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    cursor: pointer;
+  }
 
-        .device-name {
-            font-weight: 600;
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #e8e8e8;
-        }
+  .device:hover{
+    transform: translateY(-12px);
+    border-color: rgba(107,82,255,0.16);
+    box-shadow:
+      0 28px 60px rgba(98,72,200,0.12),
+      0 10px 28px rgba(0,0,0,0.6),
+      inset 0 0 22px rgba(255,255,255,0.016);
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(12,10,18,0.25));
+  }
 
-        .status {
-            font-size: 16px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
+  /* icon square */
+  .icon-wrap{
+    width:64px;
+    height:64px;
+    border-radius:14px;
+    background: rgba(255,255,255,0.02);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+    transition: transform 200ms, box-shadow 200ms, background 200ms;
+  }
 
-        .status.on {
-            color: #00eaff;
-            text-shadow: 0 0 6px #00eaff;
-        }
+  .device:hover .icon-wrap {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(107,82,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(107,82,255,0.02));
+  }
 
-        .status.off {
-            color: #ff3b3b;
-            text-shadow: 0 0 6px #ff3b3b;
-        }
+  .icon{
+    font-size:26px;
+    opacity:0.95;
+  }
 
-        .toggle-btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            width: 100%;
-            transition: 0.2s ease;
-        }
+  .title {
+    font-size:18px;
+    font-weight:600;
+    margin:0;
+    margin-bottom:6px;
+    letter-spacing:0.2px;
+  }
 
-        .toggle-on {
-            background: #00baff;
-            color: black;
-            box-shadow: 0 0 10px #00baffAA;
-        }
+  .state {
+    color:rgba(231,231,231,0.64);
+    font-size:13px;
+    margin-bottom:12px;
+  }
 
-        .toggle-off {
-            background: #ff3b3b;
-            color: white;
-            box-shadow: 0 0 10px #ff3b3bAA;
-        }
+  .state.on { color: #9be7ff; text-shadow:0 0 6px rgba(0,210,255,0.12); }
+  .state.off { color: rgba(231,231,231,0.46); }
 
-        .toggle-btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
+  /* custom toggle switch */
+  .switch {
+    --w:56px; --h:28px; --pad:4px;
+    width:var(--w);
+    height:var(--h);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.08));
+    border-radius:999px;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    display:inline-block;
+    transition: background 200ms, box-shadow 200ms, transform 200ms;
+  }
+
+  .knob {
+    width: calc(var(--h) - var(--pad) * 2);
+    height: calc(var(--h) - var(--pad) * 2);
+    background: white;
+    border-radius:50%;
+    position:absolute;
+    top:var(--pad);
+    left:var(--pad);
+    transition:left 260ms cubic-bezier(.2,.9,.3,1), transform 160ms;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  }
+
+  .switch.on {
+    background: linear-gradient(90deg, rgba(0,200,255,0.14), rgba(107,82,255,0.14));
+    box-shadow: 0 10px 30px rgba(107,82,255,0.08), inset 0 0 10px rgba(255,255,255,0.02);
+  }
+  .switch.on .knob {
+    left: calc(var(--w) - var(--h) + var(--pad));
+    transform: scale(0.98);
+  }
+
+  /* ripple */
+  .ripple {
+    position:absolute;
+    border-radius:50%;
+    background: rgba(107,82,255,0.12);
+    transform: scale(0);
+    animation: ripple-ani 640ms ease-out forwards;
+    pointer-events:none;
+    mix-blend-mode: screen;
+  }
+  @keyframes ripple-ani { to { transform: scale(1); opacity:0; } }
+
+  /* bottom add device button */
+  .actions {
+    display:flex;
+    justify-content:center;
+    margin-top:18px;
+  }
+
+</style>
 </head>
 <body>
 
-<h1>Smart Home Cenah</h1>
+<h1>Smart Home Control</h1>
+<div class="sub">Manage all your smart devices in one place</div>
 
 <div class="grid">
 
-    <div class="device" onclick="toggle('lamp')">
-        <div class="device-icon">💡</div>
-        <div class="device-name">Lamp</div>
-        <div id="lamp-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="lamp-btn">Loading</button>
+  <div class="device" onclick="doClick(event,'lamp')">
+    <div class="icon-wrap"><div class="icon">💡</div></div>
+    <div class="title">Lamp</div>
+    <div id="lamp-state" class="state off">Inactive</div>
+    <div class="switch" id="lamp-switch" aria-pressed="false" onclick="event.stopPropagation(); toggle('lamp', this)">
+      <div class="knob"></div>
     </div>
+  </div>
 
-    <div class="device" onclick="toggle('fan')">
-        <div class="device-icon">🌀</div>
-        <div class="device-name">Fan</div>
-        <div id="fan-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="fan-btn">Loading</button>
-    </div>
+  <div class="device" onclick="doClick(event,'fan')">
+    <div class="icon-wrap"><div class="icon">🌀</div></div>
+    <div class="title">Fan</div>
+    <div id="fan-state" class="state off">Inactive</div>
+    <div class="switch" id="fan-switch" onclick="event.stopPropagation(); toggle('fan', this)"><div class="knob"></div></div>
+  </div>
 
-    <div class="device" onclick="toggle('door')">
-        <div class="device-icon">🚪</div>
-        <div class="device-name">Door</div>
-        <div id="door-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="door-btn">Loading</button>
-    </div>
+  <div class="device" onclick="doClick(event,'door')">
+    <div class="icon-wrap"><div class="icon">🚪</div></div>
+    <div class="title">Door</div>
+    <div id="door-state" class="state off">Inactive</div>
+    <div class="switch" id="door-switch" onclick="event.stopPropagation(); toggle('door', this)"><div class="knob"></div></div>
+  </div>
 
-    <div class="device" onclick="toggle('window')">
-        <div class="device-icon">🪟</div>
-        <div class="device-name">Window</div>
-        <div id="window-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="window-btn">Loading</button>
-    </div>
+  <div class="device" onclick="doClick(event,'window')">
+    <div class="icon-wrap"><div class="icon">🪟</div></div>
+    <div class="title">Window</div>
+    <div id="window-state" class="state off">Inactive</div>
+    <div class="switch" id="window-switch" onclick="event.stopPropagation(); toggle('window', this)"><div class="knob"></div></div>
+  </div>
 
-    <div class="device" onclick="toggle('pc')">
-        <div class="device-icon">💻</div>
-        <div class="device-name">PC</div>
-        <div id="pc-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="pc-btn">Loading</button>
-    </div>
+  <div class="device" onclick="doClick(event,'pc')">
+    <div class="icon-wrap"><div class="icon">💻</div></div>
+    <div class="title">PC</div>
+    <div id="pc-state" class="state off">Inactive</div>
+    <div class="switch" id="pc-switch" onclick="event.stopPropagation(); toggle('pc', this)"><div class="knob"></div></div>
+  </div>
 
-    <div class="device" onclick="toggle('tv')">
-        <div class="device-icon">📺</div>
-        <div class="device-name">TV</div>
-        <div id="tv-status" class="status">Loading...</div>
-        <button class="toggle-btn" id="tv-btn">Loading</button>
-    </div>
+  <div class="device" onclick="doClick(event,'tv')">
+    <div class="icon-wrap"><div class="icon">📺</div></div>
+    <div class="title">TV</div>
+    <div id="tv-state" class="state off">Inactive</div>
+    <div class="switch" id="tv-switch" onclick="event.stopPropagation(); toggle('tv', this)"><div class="knob"></div></div>
+  </div>
 
 </div>
 
 <script>
+/* ripple on card click */
+function doClick(e, device){
+  const card = e.currentTarget;
+  ripple(card, e);
+  // also toggle when clicking card body (optional): comment out if not wanted
+  // toggle(device, document.getElementById(device + '-switch'));
+}
+
+/* create ripple element */
+function ripple(card, e){
+  const rect = card.getBoundingClientRect();
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const size = Math.max(rect.width, rect.height) * 1.1;
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size/2) + 'px';
+  r.style.top = (e.clientY - rect.top - size/2) + 'px';
+  card.appendChild(r);
+  setTimeout(()=> r.remove(), 700);
+}
+
+/* load states from API and update UI */
 function loadDevices() {
-    fetch("/api/devices")
-        .then(res => res.json())
-        .then(data => {
-            Object.keys(data).forEach(device => {
-                const state = data[device];
+  fetch('/api/devices')
+    .then(r => r.json())
+    .then(data => {
+      ['lamp','fan','door','window','pc','tv'].forEach(name=>{
+        const state = !!data[name];
+        const stateEl = document.getElementById(name + '-state');
+        const sw = document.getElementById(name + '-switch');
 
-                document.getElementById(device + "-status").innerHTML =
-                    state ? "ON" : "OFF";
+        stateEl.textContent = state ? 'Active' : 'Inactive';
+        stateEl.className = 'state ' + (state ? 'on' : 'off');
 
-                document.getElementById(device + "-status").className =
-                    "status " + (state ? "on" : "off");
-
-                document.getElementById(device + "-btn").innerHTML =
-                    state ? "Turn Off" : "Turn On";
-
-                document.getElementById(device + "-btn").className =
-                    "toggle-btn " + (state ? "toggle-off" : "toggle-on");
-            });
-        });
-}
-
-function toggle(device) {
-    fetch("/api/toggle", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({ name: device })
+        if(state){
+          sw.classList.add('on');
+          sw.setAttribute('aria-pressed','true');
+        } else {
+          sw.classList.remove('on');
+          sw.setAttribute('aria-pressed','false');
+        }
+      });
     })
-    .then(() => loadDevices());
+    .catch(err => {
+      console.error('Failed to fetch /api/devices', err);
+    });
 }
 
-setInterval(loadDevices, 1000);
-loadDevices();
-</script>
+/* toggle call: accepts device name and switch element (optional) */
+function toggle(name, switchEl){
+  // optimistic UI: flip visual immediately for snappy feel
+  const currentOn = switchEl?.classList.contains('on');
+  if(switchEl){
+    if(currentOn){ switchEl.classList.remove('on'); }
+    else { switchEl.classList.add('on'); }
+  }
 
+  fetch('/api/toggle', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+    body: JSON.stringify({ name })
+  })
+  .then(res => res.json())
+  .then(()=> loadDevices())
+  .catch(err=>{
+    console.error('toggle failed', err);
+    // rollback UI
+    if(switchEl){
+      if(currentOn) switchEl.classList.add('on'); else switchEl.classList.remove('on');
+    }
+  });
+}
+
+/* initial load + keep in sync */
+loadDevices();
+setInterval(loadDevices, 1200);
+
+</script>
 </body>
 </html>
