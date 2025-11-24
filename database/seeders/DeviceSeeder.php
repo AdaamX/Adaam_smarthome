@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Device;
 
 class DeviceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $devices = ['lamp', 'fan', 'door', 'window', 'pc', 'tv'];
+        $devices = [
+            ['name' => 'lamp', 'label' => 'Lamp', 'icon' => '💡', 'state' => 0],
+            ['name' => 'fan', 'label' => 'Fan', 'icon' => '🌀', 'state' => 0],
+            ['name' => 'door', 'label' => 'Door', 'icon' => '🚪', 'state' => 0],
+            ['name' => 'window', 'label' => 'Window', 'icon' => '🪟', 'state' => 0],
+            ['name' => 'pc', 'label' => 'PC', 'icon' => '💻', 'state' => 0],
+            ['name' => 'tv', 'label' => 'TV', 'icon' => '📺', 'state' => 0],
+        ];
 
         foreach ($devices as $device) {
-            Device::create([
-                'name' => $device,
-                'state' => 0
-            ]);
+            Device::create($device);
         }
     }
 }

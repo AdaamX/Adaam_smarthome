@@ -1,4 +1,3 @@
-<!-- Figma screenshot path: /mnt/data/2025-11-22T04-22-25.251Z.png -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,9 +31,6 @@
     padding:36px 48px;
     box-sizing:border-box;
   }
-
-  /* optional background preview from figma screenshot (local path) */
-  /* background-image: url('/mnt/data/2025-11-22T04-22-25.251Z.png'); background-size: cover; opacity:0.04; */
 
   h1{
     text-align:center;
@@ -290,25 +286,30 @@ function loadDevices() {
 
 /* toggle call: accepts device name and switch element (optional) */
 function toggle(name, switchEl){
-  // optimistic UI: flip visual immediately for snappy feel
-  const currentOn = switchEl?.classList.contains('on');
-  if(switchEl){
-    if(currentOn){ switchEl.classList.remove('on'); }
-    else { switchEl.classList.add('on'); }
+  if(!switchEl) return;
+  const intendedState = !switchEl.classList.contains('on');
+
+  // update UI optimistically
+  if(intendedState){
+    switchEl.classList.add('on');
+  } else {
+    switchEl.classList.remove('on');
   }
 
   fetch('/api/toggle', {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
-    body: JSON.stringify({ name })
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ name, state: intendedState })
   })
   .then(res => res.json())
-  .then(()=> loadDevices())
-  .catch(err=>{
+  .then(() => loadDevices())
+  .catch(err => {
     console.error('toggle failed', err);
-    // rollback UI
-    if(switchEl){
-      if(currentOn) switchEl.classList.add('on'); else switchEl.classList.remove('on');
+    // rollback UI on failure
+    if(intendedState){
+      switchEl.classList.remove('on');
+    } else {
+      switchEl.classList.add('on');
     }
   });
 }
