@@ -187,6 +187,11 @@
 <h1>Smart Home Control</h1>
 <div class="sub">Manage all your smart devices in one place</div>
 
+<div class="actions" style="margin-bottom: 24px; gap: 12px;">
+  <button onclick="toggleAll(true)" style="background-color: #22c55e; color: white; font-weight: 600; font-size: 15px; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer;">Turn On All</button>
+  <button onclick="toggleAll(false)" style="background-color: #ef4444; color: white; font-weight: 600; font-size: 15px; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer;">Turn Off All</button>
+</div>
+
 <div class="grid">
 
   <div class="device" onclick="doClick(event,'lamp')">
@@ -311,6 +316,19 @@ function toggle(name, switchEl){
     } else {
       switchEl.classList.add('on');
     }
+  });
+}
+
+function toggleAll(state) {
+  fetch('/api/devices/toggle-all', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ state: state })
+  })
+  .then(res => res.json())
+  .then(() => loadDevices())
+  .catch(err => {
+    console.error('toggleAll failed', err);
   });
 }
 

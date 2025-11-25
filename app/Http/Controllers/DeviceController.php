@@ -37,4 +37,18 @@ class DeviceController extends Controller
             'state' => $device->state
         ]);
     }
+
+    public function toggleAll(Request $request): JsonResponse
+    {
+        $request->validate([
+            'state' => 'required|boolean'
+        ]);
+
+        Device::query()->update(['state' => $request->state]);
+
+        return response()->json([
+            'success' => true,
+            'state' => $request->state
+        ]);
+    }
 }
