@@ -19,19 +19,19 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define WIFI_SSID "YOUR_WIFI_SSID"
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#define WIFI_SSID "F11"
+#define WIFI_PASSWORD "11221122"
 
 // Backend server base URL (replace with your backend IP/domain)
-const char *backendHost = "http://192.168.1.100"; // e.g. IP of host running Laravel backend
+const char *backendHost = "10.154.207.110:8000"; // e.g. IP of host running Laravel backend
 
 // Device GPIO pin assignments - adjust according to your ESP8266 board wiring
-const int PIN_LAMP = 5;    // D1
-const int PIN_FAN = 4;     // D2
-const int PIN_DOOR = 14;   // D5
-const int PIN_WINDOW = 12; // D6
-const int PIN_PC = 13;     // D7
-const int PIN_TV = 15;     // D8
+const int PIN_LAMP = D1;    // D1
+const int PIN_FAN = D2;     // D2
+const int PIN_DOOR = D5;   // D5
+const int PIN_WINDOW = D6; // D6
+const int PIN_PC = D7;     // D7
+const int PIN_TV = D8;     // D8
 
 // Time between device states fetch (1200 ms similar to frontend)
 const unsigned long FETCH_INTERVAL_MS = 1200;
@@ -137,13 +137,14 @@ void fetchDeviceStates()
 }
 
 // Toggle a device by sending POST to backend API
-bool toggleDevice(const char *deviceName)
+bool toggleDevice(const char *deviceName, bool state)
 {
     if (http.begin(client, String(backendHost) + "/api/toggle"))
     {
         http.addHeader("Content-Type", "application/json");
         StaticJsonDocument<64> doc;
         doc["name"] = deviceName;
+        doc["state"] = state;
         String requestBody;
         serializeJson(doc, requestBody);
 
